@@ -42,7 +42,7 @@ public class UserController {
             log.info("code:{}",code);
 
             //调用阿里云短信服务API完成发送短信，sendMsg
-            SMSceshi.sendMessage(phone,code);
+            //SMSceshi.sendMessage(phone,code);
             //需要将生成的验证码保存到session,手机号作为key，code为值
             session.setAttribute(phone,code);
             Result.success("手机验证码短信发送成功");

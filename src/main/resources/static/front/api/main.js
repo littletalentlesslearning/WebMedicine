@@ -1,4 +1,4 @@
-//获取所有的菜品分类
+//获取所有的药品分类
 function categoryListApi() {
     return $axios({
       'url': '/category/list',
@@ -6,19 +6,19 @@ function categoryListApi() {
     })
   }
 
-//获取菜品分类对应的菜品
+//获取药品分类对应的药品
 function dishListApi(data) {
     return $axios({
-        'url': '/dish/list',
+        'url': '/medicine/list',
         'method': 'get',
         params:{...data}
     })
 }
 
-//获取菜品分类对应的套餐
+//获取药品分类对应的套餐
 function setmealListApi(data) {
     return $axios({
-        'url': '/setmeal/list',
+        'url': '/package/list',
         'method': 'get',
         params:{...data}
     })
@@ -28,6 +28,7 @@ function setmealListApi(data) {
 function cartListApi(data) {
     return $axios({
         'url': '/shoppingCart/list',
+        //'url': '/front/cartData.json',
         'method': 'get',
         params:{...data}
     })
@@ -62,7 +63,7 @@ function clearCartApi() {
 //获取套餐的全部菜品
 function setMealDishDetailsApi(id) {
     return $axios({
-        'url': `/setmeal/dish/${id}`,
+        'url': `/package/medicine/${id}`,
         'method': 'get',
     })
 }

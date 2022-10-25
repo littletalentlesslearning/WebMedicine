@@ -96,7 +96,7 @@
                 <span v-for="item in JSON.parse(flavor.value)" 
                 :key="item"  
                 @click="flavorClick(flavor,item)"
-                :class="{spanActive:flavor.dishFlavor === item}"
+                :class="{spanActive:flavor.medicineSpecifications === item}"
                 >{{item}}</span>
             </div>
           </div>
@@ -242,7 +242,7 @@
               dialogFlavor:{
                 name:'',
                 flavors:[],
-                dishId:undefined,
+                medicineId:undefined,
                 price:undefined,
                 show:false,
                 image:''
@@ -340,7 +340,7 @@
                 if(dishList.length > 0 && cartData.length > 0){
                   dishList.forEach(dish=>{
                     cartData.forEach(cart=>{
-                      if(dish.id === cart.dishId){
+                      if(dish.id === cart.medicineId){
                         dish.number = cart.number
                       }
                     })
@@ -351,7 +351,7 @@
                 this.$notify({ type:'warning', message:res.msg});
               }
             },
-            //获取套餐数据setmealId
+            //获取套餐数据packageId
             async getSetmealData(){
               if(!this.categoryId){
                 return
@@ -363,7 +363,7 @@
                   if(dishList.length > 0 && cartData.length > 0){
                     dishList.forEach(dish=>{
                       cartData.forEach(cart=>{
-                        if(dish.id === cart.setmealId){
+                        if(dish.id === cart.packageId){
                           dish.number = cart.number
                         }
                       })
@@ -387,16 +387,16 @@
             async addCart(item){
               let params = {
                 amount:item.price/100,//金额
-                dishFlavor:item.dishFlavor,//口味  如果没有传undefined
-                dishId:undefined,//菜品id
-                setmealId:undefined,//套餐id
+                medicineSpecifications:item.medicineSpecifications,//口味  如果没有传undefined
+                medicineId:undefined,//药品id
+                packageId:undefined,//套餐id
                 name:item.name,
                 image:item.image
               }
               if(Array.isArray(item.flavors)){//表示是菜品
-                params.dishId = item.id
+                params.medicineId = item.id
               }else{//表示套餐 套餐没有口味
-                params.setmealId = item.id
+                params.packageId = item.id
               }
               const res = await addCartApi(params)
               if(res.code === 1){
@@ -417,11 +417,11 @@
             //菜单中减少选中的商品
             async subtractCart(item){
                 let params = {
-                  dishId:item.id,
+                  medicineId:item.id,
                 }
                 if(!Array.isArray(item.flavors)){
                   params = {
-                    setmealId:item.id,
+                    packageId:item.id,
                   }
                 }
                 const res = await updateCartApi(params)
@@ -450,16 +450,16 @@
             async cartNumAdd(item){
               let params = {
                 amount:item.amount,//金额
-                dishFlavor:item.dishFlavor,//口味  如果没有传undefined
-                dishId:item.dishId,//菜品id
-                setmealId:item.setmealId,//套餐id
+                medicineSpecifications:item.medicineSpecifications,//规格  如果没有传undefined
+                medicineId:item.medicineId,//药品id
+                packageId:item.packageId,//套餐id
                 name:item.name,
                 image:item.image
               }
               const res = await addCartApi(params)
               if(res.code === 1){
                 this.dishList.forEach(dish=>{
-                  if(dish.id === (item.dishId || item.setmealId)){
+                  if(dish.id === (item.medicineId || item.packageId)){
                     dish.number = res.data.number
                   }
                 })
@@ -472,13 +472,13 @@
             //购物车中减少商品数量
             async cartNumberSubtract(item){
               let params = {
-                  dishId:item.dishId,
-                  setmealId:item.setmealId,
+                medicineId:item.medicineId,
+                packageId:item.packageId,
                 }
                 const res = await updateCartApi(params)
                 if(res.code === 1){
                 this.dishList.forEach(dish=>{
-                  if(dish.id === (item.dishId || item.setmealId)){
+                  if(dish.id === (item.medicineId || item.packageId)){
                     dish.number = (res.data.number === 0 ? undefined : res.data.number)
                   }
                 })
@@ -491,7 +491,7 @@
             //修改商品列表中的数据number
             changeDishList(item){
               for(let ele of this.dishList){
-                if(ele.id === (item.setmealId || item.dishId)){
+                if(ele.id === (item.packageId || item.medicineId)){
                   ele.number = item.number
                 }
               }
@@ -515,21 +515,21 @@
               this.dialogFlavor = {
                 name:'',
                 flavors:[],
-                dishId:undefined,
+                medicineId:undefined,
                 price:undefined,
                 show:false
               }
               this.dialogFlavor={
                 name:item.name,
                 flavors:item.flavors,
-                dishId:item.id,
+                medicineId:item.id,
                 price:item.price,
                 show:true,
                 image:item.image
               }
             },
             flavorClick(flavor,item){
-              flavor.dishFlavor = item
+              flavor.medicineSpecifications = item
               //强制刷新dialog的dom
               this.dialogFlavor.show = false
               this.dialogFlavor.show = true
@@ -538,10 +538,10 @@
             dialogFlavorAddCart(){
               const dialogFlavor = this.dialogFlavor
               let flag = true
-              let dishFlavor = []
+              let medicineSpecifications = []
               dialogFlavor.flavors.forEach(item=>{
-                if(item.dishFlavor){
-                  dishFlavor.push(item.dishFlavor)
+                if(item.medicineSpecifications){
+                  medicineSpecifications.push(item.medicineSpecifications)
                 }else{
                       flag = false
                       Notify({ type: 'warning', message: '请选择'+ item.name });
@@ -550,8 +550,8 @@
               if(flag){
                 this.addCart({
                   price:dialogFlavor.price,
-                  dishFlavor:dishFlavor.join(","),
-                  id:dialogFlavor.dishId,
+                  medicineSpecifications:medicineSpecifications.join(","),
+                  id:dialogFlavor.medicineId,
                   flavors:[],
                   image:dialogFlavor.image,
                   name:dialogFlavor.name

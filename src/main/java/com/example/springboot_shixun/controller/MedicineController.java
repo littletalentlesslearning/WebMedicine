@@ -6,6 +6,7 @@ import com.example.springboot_shixun.common.Result;
 import com.example.springboot_shixun.dto.MedicineDto;
 import com.example.springboot_shixun.entity.Category;
 import com.example.springboot_shixun.entity.Medicine;
+import com.example.springboot_shixun.entity.MedicineSpecifications;
 import com.example.springboot_shixun.service.CategoryService;
 import com.example.springboot_shixun.service.MedicineService;
 import com.example.springboot_shixun.service.MedicineSpecificationsService;
@@ -148,7 +149,7 @@ public class MedicineController {
      * @param medicine
      * @return
      */
-    @GetMapping("/list")
+  /*  @GetMapping("/list")
     public Result<List<Medicine>> list( Medicine medicine){
         //先根据分类id查询medicine表
         //条件构造器
@@ -167,6 +168,50 @@ public class MedicineController {
         //查询,返回的是一个集合
         List<Medicine> list = medicineService.list(queryWrapper);
         return Result.success(list);
+    }*/
+
+
+    @GetMapping("/list")
+    public Result<List<MedicineDto>> list( Medicine medicine){
+        //先根据分类id查询medicine表
+        //条件构造器
+        LambdaQueryWrapper<Medicine> queryWrapper = new LambdaQueryWrapper<>();
+
+        //添加条件,先判断id是否为空
+        queryWrapper.eq(medicine.getCategoryId() != null,Medicine::getCategoryId,medicine.getCategoryId());
+        //添加条件，查询状态为1（起售状态）
+        queryWrapper.eq(Medicine::getStatus,1);
+        //添加排序条件
+        queryWrapper.orderByAsc(Medicine::getSort).orderByDesc(Medicine::getUpdateTime);
+
+        //根据药品名称查询表
+        queryWrapper.like(medicine.getName() != null,Medicine::getName,medicine.getName());
+
+        //查询,返回的是一个集合
+        List<Medicine> list = medicineService.list(queryWrapper);
+
+        List<MedicineDto> medicineDtoList = list.stream().map((item) -> {
+            MedicineDto medicineDto = new MedicineDto();
+
+            BeanUtils.copyProperties(item,medicineDto);
+            Long categoryId = item.getCategoryId();
+            //根据id查询对象
+            Category category = categoryService.getById(categoryId);
+            if (category != null){
+                String categoryName = category.getName();
+                medicineDto.setCategoryName(categoryName);
+            }
+
+            //当前药品id
+            Long medicineid = item.getId();
+            LambdaQueryWrapper<MedicineSpecifications> lambdaQueryWrapper = new LambdaQueryWrapper<>();
+            lambdaQueryWrapper.eq(MedicineSpecifications::getMedicineId,medicineid);
+            List<MedicineSpecifications> medicineSpecifications = medicineSpecificationsService.list(lambdaQueryWrapper);
+            medicineDto.setFlavors(medicineSpecifications);
+
+            return medicineDto;
+        }).collect(Collectors.toList());
+        return Result.success(medicineDtoList);
     }
 
     /**

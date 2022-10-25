@@ -16,7 +16,7 @@ public class SMSceshi {
      * @param param 参数
      */
     public static void sendMessage(String phoneNumbers,String param){
-        DefaultProfile profile = DefaultProfile.getProfile("cn-hangzhou", "LTAI5tP8zHpaaN1srjC8heet", "s6g9x7WXE8kbQzQowWiWcwc02Trukr");
+        DefaultProfile profile = DefaultProfile.getProfile("cn-hangzhou", "", "");
         /** use STS Token
          DefaultProfile profile = DefaultProfile.getProfile(
          "<your-region-id>",           // The region ID

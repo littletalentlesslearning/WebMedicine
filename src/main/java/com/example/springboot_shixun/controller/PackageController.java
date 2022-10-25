@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.example.springboot_shixun.common.Result;
 import com.example.springboot_shixun.dto.PackageDto;
 import com.example.springboot_shixun.entity.Category;
+import com.example.springboot_shixun.entity.Medicine;
 import com.example.springboot_shixun.entity.Package;
 import com.example.springboot_shixun.entity.PackageMedicine;
 import com.example.springboot_shixun.service.CategoryService;
@@ -104,5 +105,27 @@ public class PackageController {
 
 
         return Result.success("套餐信息修改成功");
+    }
+
+    /**
+     * 通过套餐分类显示所有套餐
+     * url传数据不是json
+     * @param package1
+     * @return
+     */
+    @GetMapping("/list")
+    public Result<List<Package>> list(Package package1){
+        Long categoryId = package1.getCategoryId();
+        LambdaQueryWrapper<Package> queryWrapper = new LambdaQueryWrapper<>();
+        queryWrapper.eq(categoryId != null,Package::getCategoryId,categoryId);
+        //添加条件，查询状态为1（起售状态）
+        queryWrapper.eq(Package::getStatus,1);
+        queryWrapper.orderByDesc(Package::getUpdateTime);
+        List<Package> list = packageService.list(queryWrapper);
+
+
+
+
+        return Result.success(list);
     }
 }
