@@ -60,7 +60,7 @@ function clearCartApi() {
     })
 }
 
-//获取套餐的全部菜品
+//获取套餐的全部药品
 function setMealDishDetailsApi(id) {
     return $axios({
         'url': `/package/medicine/${id}`,

@@ -159,6 +159,7 @@ public class EmployeeController {
         //employee.setUpdateUser(empId);
 
         employeeService.updateById(employee);
+        System.out.println(employee);
         //js对id丢失了精度对long型数据只能保证到前16位，导致提交id与数据库id不一致
         //可以在服务端给页面响应json数据时进行处理，将long型数据统一转为string字符串
         //如果数据库形成自增大量用户同时添加可能导致id碰撞

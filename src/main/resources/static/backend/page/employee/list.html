@@ -10,14 +10,14 @@
   <link rel="stylesheet" href="../../styles/common.css" />
   <link rel="stylesheet" href="../../styles/page.css" />
   <style>
-    #member-app  .notAdmin::after{
+    #employee-app  .notAdmin::after{
       border: 0 !important;
 
     }
   </style>
 </head>
 <body>
-  <div class="dashboard-container" id="member-app">
+  <div class="dashboard-container" id="employee-app">
     <div class="container">
       <div class="tableBar">
         <el-input
@@ -36,7 +36,7 @@
         </el-input>
         <el-button
           type="primary"
-          @click="addMemberHandle('add')"
+          @click="addEmployeeHandle('add')"
         >
           + 添加员工
         </el-button>
@@ -73,7 +73,7 @@
               type="text"
               size="small"
               class="blueBug"
-              @click="addMemberHandle(scope.row.id)"
+              @click="addEmployeeHandle(scope.row.id)"
               :class="{notAdmin:user !== 'admin'}"
             >
               编辑
@@ -109,10 +109,10 @@
     <!-- 引入axios -->
     <script src="../../plugins/axios/axios.min.js"></script>
     <script src="../../js/request.js"></script>
-    <script src="../../api/member.js"></script>
+    <script src="../../api/employee.js"></script>
     <script>
       new Vue({
-        el: '#member-app',
+        el: '#employee-app',
         data() {
           return {
              input: '',
@@ -138,7 +138,7 @@
               pageSize: this.pageSize,
               name: this.input ? this.input : undefined
             }
-            await getMemberList(params).then(res => {
+            await getEmployeeList(params).then(res => {
               if (String(res.code) === '1') {
                 this.tableData = res.data.records || []
                 this.counts = res.data.total
@@ -152,17 +152,17 @@
             this.init();
           },
            // 添加
-          addMemberHandle (st) {
+          addEmployeeHandle (st) {
             if (st === 'add'){
               window.parent.menuHandle({
                 id: '2',
-                url: '/backend/page/member/add.html',
+                url: '/backend/page/employee/add.html',
                 name: '添加员工'
               },true)
             } else {
               window.parent.menuHandle({
                 id: '2',
-                url: '/backend/page/member/add.html?id='+st,
+                url: '/backend/page/employee/add.html?id='+st,
                 name: '修改员工'
               },true)
             }

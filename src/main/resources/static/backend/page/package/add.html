@@ -149,13 +149,13 @@
       .addDishCon .el-checkbox__label{
         width: 100%;
       }
-      #combo-add-app .setmealFood .el-form-item__label::before{
+      #package-add-app .setmealFood .el-form-item__label::before{
           content: '*';
           color: #F56C6C;
           margin-right: 4px;
       }
 
-      #combo-add-app .uploadImg .el-form-item__label::before{
+      #package-add-app .uploadImg .el-form-item__label::before{
           content: '*';
           color: #F56C6C;
           margin-right: 4px;
@@ -163,7 +163,7 @@
     </style>
   </head>
   <body>
-    <div class="addBrand-container" id="combo-add-app">
+    <div class="addBrand-container" id="package-add-app">
       <div class="container">
         <el-form
           ref="ruleForm"
@@ -361,13 +361,13 @@
     <!-- 引入axios -->
     <script src="../../plugins/axios/axios.min.js"></script>
     <script src="../../js/request.js"></script>
-    <script src="../../api/combo.js"></script>
+    <script src="../../api/package.js"></script>
     <script src="../../js/validate.js"></script>
     <script src="../../js/index.js"></script>
-    <script src="../../api/food.js"></script>
+    <script src="../../api/medicine.js"></script>
     <script>
       new Vue({
-        el: '#combo-add-app',
+        el: '#package-add-app',
         data() {
           return {
             id: '',
@@ -630,7 +630,7 @@
             window.parent.menuHandle(
               {
                 id: '5',
-                url: '/backend/page/combo/list.html',
+                url: '/backend/page/package/list.html',
                 name: '套餐管理',
               },
               false

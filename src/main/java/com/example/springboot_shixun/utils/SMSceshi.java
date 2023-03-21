@@ -31,7 +31,7 @@ public class SMSceshi {
         request.setSysRegionId("cn-hangzhou");
         request.setSignName("阿里云短信测试");
         request.setTemplateCode("SMS_154950909");
-        //request.setPhoneNumbers("13829021290");
+        //request.setPhoneNumbers("138。。。。。。");
         //给每个手机号发送短信，手机号写在下方位置
         request.setPhoneNumbers(phoneNumbers);
         request.setTemplateParam("{\"code\":\""+param+"\"}");

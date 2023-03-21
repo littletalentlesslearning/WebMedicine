@@ -39,7 +39,7 @@
       font-size: 14px;
     }
 
-    #food-add-app .uploadImg .el-form-item__label::before{
+    #medicine-add-app .uploadImg .el-form-item__label::before{
           content: '*';
           color: #F56C6C;
           margin-right: 4px;
@@ -48,7 +48,7 @@
   </style>
 </head>
 <body>
-   <div class="addBrand-container" id="food-add-app">
+   <div class="addBrand-container" id="medicine-add-app">
     <div class="container">
       <el-form
         ref="ruleForm"
@@ -253,10 +253,10 @@
     <script src="../../js/request.js"></script>
     <script src="../../js/validate.js"></script>
     <script src="../../js/index.js"></script>
-    <script src="../../api/food.js"></script>
+    <script src="../../api/medicine.js"></script>
     <script>
       new Vue({
-        el: '#food-add-app',
+        el: '#medicine-add-app',
         data() {
           return {
             id: '',
@@ -543,7 +543,7 @@
           goBack(){
             window.parent.menuHandle({
               id: '4',
-              url: '/backend/page/food/list.html',
+              url: '/backend/page/medicine/list.html',
               name: '药品管理'
             },false)
           }
